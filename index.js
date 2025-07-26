@@ -34,6 +34,6 @@ http.createServer((req,res)=>{
         savedname.splice(index, 1);
         res.end();
     }
-}).server.listen(PORT, '0.0.0.0', () => {
+}).listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
