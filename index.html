@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+</head>
+<body>
+
+<form method="get" action="/sub">
+  <input name="name" />
+  <button type="submit">submit</button>
+</form>
+
+<div>seperation</div>
+
+<form method="post" action="/sub1">
+  <input name="name" />
+  <button type="submit">submit</button>
+</form>
+
+<ol class="add"></ol>
+
+<script>
+  let cl = document.querySelector(".add");
+
+  function loadNames() {
+    fetch("/ret")
+      .then(res => res.json())
+      .then(data => {
+        cl.innerHTML = "";
+        data.forEach((name, i) => {
+          const li = document.createElement("li");
+          li.innerHTML = `${name} <button onclick="deleteName(${i})">Delete</button>`;
+          cl.appendChild(li);
+        });
+      });
+  }
+
+  function deleteName(index) {
+    fetch("/delete?index=" + index)
+      .then(() => loadNames());
+  }
+  window.onload = loadNames;
+</script>
+
+</body>
+</html>

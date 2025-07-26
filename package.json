@@ -1,0 +1,12 @@
+{
+  "name": "chat-server",
+  "version": "1.0.0",
+  "description": "Simple private chat app using Node.js and HTTP",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["node", "http", "chat", "private"],
+  "author": "Devang Kumar",
+  "license": "MIT"
+}
