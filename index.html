@@ -1,138 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ToDo App</title>
-  <style>
-    :root {
-      --primary: #4f46e5;
-      --secondary: #f3f4f6;
-      --danger: #ef4444;
-      --border: #e5e7eb;
-      --text: #111827;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--secondary);
-      margin: 0;
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--text);
-    }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    form {
-      background-color: white;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    input {
-      flex: 1;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background-color: #4338ca;
-    }
-
-    .add {
-      list-style: none;
-      padding: 0;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .add li {
-      background-color: white;
-      margin-bottom: 0.5rem;
-      padding: 0.75rem 1rem;
-      border-radius: 0.75rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .add li button {
-      background-color: var(--danger);
-      font-size: 0.875rem;
-      padding: 0.3rem 0.75rem;
-    }
-
-    .add li button:hover {
-      background-color: #dc2626;
-    }
-
-    div {
-      margin: 1rem 0;
-      font-weight: 500;
-      color: #6b7280;
-    }
-  </style>
+    <title>Todo App</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: #f0f0f0;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 70%;
+        }
+        button {
+            padding: 10px;
+        }
+        li {
+            margin: 10px 0;
+            list-style: none;
+        }
+        a {
+            margin-left: 10px;
+            color: red;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
+    <h2>Todo App</h2>
+    <form action="/add" method="POST">
+        <input type="text" name="todo" placeholder="Enter todo..." required />
+        <button type="submit">Add</button>
+    </form>
+    <ul id="list"></ul>
 
-<h1>Modern ToDo App</h1>
-
-<form method="post" action="/sub1">
-  <input name="name" placeholder="Add name via POST" />
-  <button type="submit">Submit</button>
-</form>
-
-<ol class="add"></ol>
-
-<script>
-  let cl = document.querySelector(".add");
-
-  function loadNames() {
-    fetch("/ret")
-      .then(res => res.json())
-      .then(data => {
-        cl.innerHTML = "";
-        data.forEach((name, i) => {
-          const li = document.createElement("li");
-          li.innerHTML = `${name} <button onclick="deleteName(${i})">Delete</button>`;
-          cl.appendChild(li);
-        });
-      });
-  }
-
-  function deleteName(index) {
-    fetch("/delete?index=" + index)
-      .then(() => loadNames());
-  }
-
-  window.onload = loadNames;
-</script>
-
+    <script>
+        fetch("/todos")
+            .then(res => res.json())
+            .then(data => {
+                const list = document.getElementById("list");
+                list.innerHTML = "";
+                data.forEach((item, index) => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    const del = document.createElement("a");
+                    del.href = "/delete?index=" + index;
+                    del.textContent = "❌";
+                    li.appendChild(del);
+                    list.appendChild(li);
+                });
+            });
+    </script>
 </body>
 </html>
